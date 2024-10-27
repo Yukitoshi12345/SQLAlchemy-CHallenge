@@ -69,11 +69,22 @@ def precipitation():
     # Return the JSON representation of your dictionary.
     precipitation_dict = {date: prcp for date, prcp in precipitation_data}
 
+    session.close()
     return jsonify(precipitation_dict)
 
 
 @app.route("/api/v1.0/stations")
-# Return a JSON list of stations from the dataset.
+def stations():
+    # Return a JSON list of stations from the dataset.
+
+    # Query all station names
+    stations = session.query(Station.station).all()
+
+    # Convert to a list
+    stations_list = [station[0] for station in stations]
+
+    session.close()
+    return jsonify(stations_list)
 
 @app.route("/api/v1.0/tobs")
 # Query the dates and temperature observations of the most-active station for the previous year of data.
